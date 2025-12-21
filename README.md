@@ -180,6 +180,6 @@ For support, licensing, or feature requests:
 All rights reserved.
 
 ---
-Developer : [Samrat Subedi](https://github.com/subedi-samrat)
-
-Website : [printely-connect.subedi-samrat.com.np](https://printely-connect.subedi-samrat.com.np) 
+</>
+Developer 👨‍💻 : [Samrat Subedi](https://github.com/subedi-samrat)  |  Website 🌐 : [www.subedi-samrat.com.np](https://subedi-samrat.com.np) 
+</>
