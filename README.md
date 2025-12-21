@@ -1,3 +1,5 @@
+<div align="center">
+    
 # Printely Connect
 
 ![Printely Connect](assets/Printely_Connect.png)
@@ -6,6 +8,8 @@
 [![Latest Release](https://img.shields.io/badge/download-latest-brightgreen.svg)](https://github.com/Khatra-Tech-Pvt-Ltd/printely-connect/releases/latest)
 [![All Releases](https://img.shields.io/badge/releases-all-yellow.svg)](https://github.com/Khatra-Tech-Pvt-Ltd/printely-connect/releases)
 [![License](https://img.shields.io/badge/license-proprietary-red.svg)](LICENSE)
+
+</div>
 
 **Printely Connect** is a desktop-first printer orchestration platform designed for businesses that require **secure, reliable, and programmable printing**.  
 It exposes a **REST API** to control and manage thermal printers locally or remotely—without coupling your application logic to printer hardware.
@@ -170,7 +174,7 @@ For support, licensing, or feature requests:
 
 - 📧 Email: info@khatratech.com
 
-- 🌐 Website: https://www.khatratech.com
+- 🌐 Website: [Printely Connect](https://printely-connect.subedi-samrat.com.np)
 
 © 2025 [KhatraTech Pvt. Ltd](https://www.khatratech.com).
 All rights reserved.
