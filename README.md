@@ -4,14 +4,16 @@
 
 ![Printely Connect](assets/Printely_Connect.png)
 
-[![Version](https://img.shields.io/badge/version-1.0.3-blue.svg)](https://github.com/Khatra-Tech-Pvt-Ltd/printely-connect/releases/tag/1.0.3)
+[![Node.js Version](https://img.shields.io/badge/node-18%2B-brightgreen.svg)](https://nodejs.org/)
+[![Electron](https://img.shields.io/badge/electron-35.7.5-blue.svg)](https://www.electronjs.org/)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://github.com/khatratech/printely-connect/releases)
 [![Latest Release](https://img.shields.io/badge/download-latest-brightgreen.svg)](https://github.com/Khatra-Tech-Pvt-Ltd/printely-connect/releases/latest)
 [![All Releases](https://img.shields.io/badge/releases-all-yellow.svg)](https://github.com/Khatra-Tech-Pvt-Ltd/printely-connect/releases)
 [![License](https://img.shields.io/badge/license-proprietary-red.svg)](LICENSE)
 
 </div>
 
-**Printely Connect** is a desktop-first printer orchestration platform designed for businesses that require **secure, reliable, and programmable printing**.  
+**Printely Connect** is a powerful desktop application for managing thermal printers with REST API support and remote access capabilities. Built with Node.js and Electron, it provides a modern, cross-platform solution for businesses that require **secure, reliable, and programmable printing**.  
 It exposes a **REST API** to control and manage thermal printers locally or remotely—without coupling your application logic to printer hardware.
 
 ---
@@ -29,23 +31,39 @@ Printely Connect acts as a **bridge between modern software systems and physical
 ## ✨ Core Features
 
 ### 🖨️ Multi-Printer Management
-- Auto-discover USB, Network, and Serial printers
+- Manage multiple network thermal printers
 - Register and monitor printers from a single desktop agent
 - Real-time availability and health checks via API
+- ESC/POS compatible thermal printers support
 
 ### 🔐 Secure API-Driven Printing
 - `X-API-Key` based authentication
 - JSON-based request validation
 - Safe for VPNs and secure tunnels
+- Content Security Policy enabled
 
 ### 🧩 Smart Template Engine
 - Reusable JSON print templates
+- **NEW!** Visual Template Builder with drag-and-drop interface
 - No ESC/POS logic inside business apps
 - Consistent branding across devices
+- Live preview and test printing
+
+### 🌐 Remote Access
+- Built-in Localtunnel integration for internet access
+- Automatic subdomain persistence
+- Access your printers from anywhere
+
+### 💾 Zero Native Dependencies
+- Pure JavaScript implementation
+- No compilation needed
+- Fast startup and deployment
+- JSON-based persistent storage
 
 ### ⚙️ Production-Ready Error Handling
 - Predictable HTTP responses (401, 404, 500)
 - Designed for retries, alerts, and dashboards
+- Comprehensive logging system
 
 ---
 
@@ -64,7 +82,7 @@ Ideal for receipts, kitchen tickets, and order slips.
 ### 📦 Logistics & Warehousing
 - Validate printer availability before batch processing
 - Print shipping labels and manifests on demand
-- Detect failures early using `/api/status`
+- Detect failures early using `/api/health`
 
 ---
 
@@ -83,47 +101,130 @@ Ideal for receipts, kitchen tickets, and order slips.
 ---
 
 
+## 💻 System Requirements
+
+### Minimum Requirements
+- **CPU**: 1 Core
+- **RAM**: 512 MB
+- **Disk Space**: 200 MB
+- **OS**: Windows 10+, macOS 10.13+, or Linux (Ubuntu 18.04+)
+
+### Supported Printers
+- **Network Printers**: ESC/POS compatible thermal printers
+- **Protocols**: TCP/IP (Port 9100 default)
+- **Tested Brands**: Epson, Star Micronics, Zebra, Citizen
+
+---
+
 ## ⚡ Quick Start
 
 ### Installation
 
+**Download Pre-built App (Recommended)**
+
 1. Download the latest [**Printely Connect**](https://github.com/Khatra-Tech-Pvt-Ltd/printely-connect/releases/latest) desktop application
-2. Install and launch the application
-3. Configure your printers (USB / Network / Serial)
-4. Copy your **API Key** from the dashboard
-5. Verify the service is running
-    ```bash
-    curl -H "X-API-Key: YOUR_API_KEY" http://localhost:5000/api/status
-    ```
-6. Print a test document
-    ```bash
-    curl -X POST http://localhost:5000/api/print   -H "X-API-Key: YOUR_API_KEY"   -H "Content-Type: application/json"   -d '{"printer_id":"printer_001","content":"Hello World"}'
-    ```
+
+
+### First Launch
+
+1. The application will automatically:
+   - ✅ Create necessary directories
+   - ✅ Initialize the database
+   - ✅ Generate an API key
+   - ✅ Start the API server on port 5000
+   - ✅ Open the desktop interface
+
+2. **Get Your API Key**
+   - Look at the **Dashboard** tab
+   - Copy your API key from the **API Configuration** card
+
+3. **Add a Printer**
+   - Go to **Printers** tab
+   - Click **➕ Add Printer**
+   - Enter printer details (Name, IP Address, Port)
+   - Click **Add Printer**
+
+4. **Test Printing**
+   - Select your printer in the **Print** tab
+   - Enter some text
+   - Click **🖨️ PRINT NOW**
+
+5. **Enable Remote Access (Optional)**
+   - Go to **Settings** tab
+   - Check **Enable Localtunnel**
+   - Your public URL appears in the Dashboard
+
+### Verify Installation
+
+```bash
+# Check health
+curl http://localhost:5000/health
+
+# Get all available printers
+curl -H "X-API-Key: YOUR_API_KEY" http://localhost:5000/api/printers
+
+# Print test document
+curl -X POST http://localhost:5000/api/print \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"printer_id": 1, "text": "Hello World"}'
+```
 
 ---
 
 ## 📘 Documentation
 
 ### Basic API Usage
+
+**Base URLs:**
+- **Local**: `http://localhost:5000`
+- **Remote**: `https://your-subdomain.loca.lt` (with Localtunnel enabled)
+
+**Authentication:**
+All API endpoints (except `/health`) require an API key:
 ```bash
-# List registered printers
-curl -H "X-API-Key: YOUR_API_KEY" \
-http://localhost:5000/api/printers
+X-API-Key: your-api-key-here
 ```
 
+**Quick Examples:**
+
 ```bash
-# Submit a print job
+# Health check (no auth required)
+curl http://localhost:5000/health
+
+# List registered printers
+curl -H "X-API-Key: YOUR_API_KEY" \
+  http://localhost:5000/api/printers
+
+# Print text
 curl -X POST http://localhost:5000/api/print \
   -H "X-API-Key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "printer_id": "printer_001",
-    "content": "Hello World"
+    "printer_id": 1,
+    "text": "Hello World!\nThank you!"
+  }'
+
+# Print receipt with template
+curl -X POST http://localhost:5000/api/print \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "printer_id": 1,
+    "template": {
+      "store_name": {"align": "center", "bold": true},
+      "total": {"prefix": "Total: $", "format": ".2f"}
+    },
+    "data": {
+      "store_name": "My Store",
+      "total": 25.99
+    }
   }'
 ```
 
-Complete endpoint documentation, request/response formats, and template syntax.
-- [API Reference](docs/API.md)
+### Complete Documentation
+- **[API Reference](docs/API_DOCUMENTATION.md)** - Complete API endpoint documentation
+- **[Template Guide](docs/TEMPLATE_GUIDE.md)** - Receipt template system guide
 
 ---
 
@@ -141,7 +242,7 @@ Complete endpoint documentation, request/response formats, and template syntax.
 
 ## 📜 License
 
-Printely Connect is proprietary software developed and owned by [KhatraTech Pvt. Ltd](https://www.khatratech.com).
+Printely Connect is proprietary software developed and owned by [Samrat Subedi](https://github.com/subedi-samrat) | [KhatraTech Pvt. Ltd](https://www.khatratech.com).
 
 ### Permitted Use
 
@@ -165,21 +266,17 @@ Printely Connect is proprietary software developed and owned by [KhatraTech Pvt.
 - Governed by the laws of Nepal
 
 See [LICENSE](LICENSE) for full terms.
+See [EULA](EULA.md) for End User License Agreement details.
 
 ---
 
 ## 🧑‍💼 Support & Contact
 
-For support, licensing, or feature requests:
-
-- 📧 Email: info@khatratech.com
+### Get Help
+- **📧 Email**: support-printelyconnect@khatratech.com
 
 - 🌐 Website: [Printely Connect](https://printely-connect.subedi-samrat.com.np)
 
-© 2025 [KhatraTech Pvt. Ltd](https://www.khatratech.com).
-All rights reserved.
+© 2025 [KhatraTech Pvt. Ltd](https://www.khatratech.com). All rights reserved.
 
----
-</>
-Developer 👨‍💻 : [Samrat Subedi](https://github.com/subedi-samrat)  |  Website 🌐 : [www.subedi-samrat.com.np](https://subedi-samrat.com.np) 
-</>
+**Made with ❤️ by [Samrat Subedi](https://github.com/subedi-samrat) | [www.subedi-samrat.com.np](https://subedi-samrat.com.np)**
